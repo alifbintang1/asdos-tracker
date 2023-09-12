@@ -21,7 +21,7 @@ Terakhir, untuk membuat proyek baru, jalankan perintah `django-admin startprojec
 
 ### 2. Membuat aplikasi `main` pada proyek tersebut
 Jalankan perintah `python manage.py startapp main` untuk membuat aplikasi dengan nama `main`. Lalu, setiap saya menambahkan aplikasi, saya harus mendaftarkan aplikasinya ke dalam proyek. Caranya adalah dengan membuka berkas `settings.py` di dalam direktori proyek, lalu memodifikasi di variabel `INSTALLED_APPS`.
-```
+```python
 INSTALLED_APPS = [
     ...,
     'main',
@@ -31,7 +31,7 @@ INSTALLED_APPS = [
 
 ### 3. Melakukan _routing_ agar dapat menjalankan aplikasi
 Saya membuat `urls.py` di dalam direktori `main` yang berisi:
-```
+```python
 from django.urls import path
 from main.views import show_main
 
@@ -43,7 +43,7 @@ urlpatterns = [
 ```
 Berkas ini berguna untuk mengatur rute URL yang terkait pada aplikasi `main`.
 Untuk mengimport rute URL dari aplikasi `main` ke dalam `urls.py` proyek, maka buka berkas `urls.py` yang ada di dalam direktori proyek, lalu modifikasi _code_-nya menjadi seperti ini:
-```
+```python
 ...
 from django.urls import path, include
 ...
@@ -56,7 +56,7 @@ urlpatterns = [
 
 ### 4. Membuat model pada aplikasi `main`
 Saya membuka `models.py` yang ada di direktori aplikasi, lalu mengisinya dengan _code_ berikut:
-```
+```python
 from django.db import models
 
 class Item(models.Model):
@@ -68,7 +68,7 @@ Nama model saya adalah _Item_ yang mempunyai atribut-atribut _name, amount,_ dan
 
 ### 5. Membuat fungsi pada `views.py`
 Untuk menentukan tampilan apa yang akan saya lihat di `http://localhost:8000/main`, saya membuat direktori `templates` pada direktori aplikasi `main`. Di dalam direktori tersebut, saya menambahkan berkas `main.html` berisi _HTML code_ yang ingin saya tampilkan. Pada `views.py`, saya dapat mengembalikan `main.html` tesebut dengan memodifikasi _code_ menjadi seperti:
-```
+```python
 from django.shortcuts import render
 
 # Create your views here.
