@@ -1,8 +1,186 @@
-# Asdos Tracker
-Aplikasi Pencatat Log Asdos
+# Tugas 3
+## Implementasi
+### Membuat Input Form
+Membuat `forms.py` pada direktori APP (dalam hal ini adalah `main`) dengan isi:
+```python
+from django.forms import ModelForm
+from main.models import Item
 
-https://asdostracker.adaptable.app/main
+class ItemForm(ModelForm):
+    class Meta:
+        model = Item
+        fields = ['name', 'amount', 'description']
+```
+Setelah itu, saya membuat fungsi `create_item` untuk membuat formulir yang dapat secara otomatis menambahkan data produk yang disubmit pada `create_item.html`
+```python
+def create_item(request):
+    form = ItemForm(request.POST or None)
 
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "create_item.html", context)
+```
+Lalu, saya membuat file `create_item.html` yang diletakkan di direktori `templates`, file ini adalah tampilan form kepada user, dan user dapat memasukkan data yang diinginkan
+```html
+{% extends 'base.html' %} 
+
+{% block content %}
+<h1>Add New Item</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="Add Item"/>
+            </td>
+        </tr>
+    </table>
+</form>
+
+{% endblock %}
+```
+
+Tidak lupa, saya tambahkan path nya pada `urls.py` di direktori `main`
+```python
+path('create-product', create_item, name='create_item'),
+```
+
+### Menampilkan Objek yang Ditambahkan (dalam Format HTML, XML, JSON, XML by ID, dan JSON by ID)
+#### 1. HTML
+Karena dalam pengerjaan ini saya ingin menampilkan objeknya pada halaman utama, maka saya perlu memodifikasi fungsi `show_main` pada `views.py` agar data produk dapat ditampilkan.
+```python
+def show_main(request):
+    items = Item.objects.all()
+    context = {
+        'name': 'Alif Bintang Elfandra',
+        'class': 'PBP B',
+        'items': items, # Modifikasi di sini
+    }
+
+    return render(request, "main.html", context)
+```
+Saya juga perlu melakukan sedikit modifikasi pada `main.html` untuk menampilkan objeknya.
+```html
+...
+<!-- Untuk menampilkan tabel -->
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Description</th>
+    
+    </tr>
+
+    {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
+
+    {% for item in items %}
+        <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.amount}}</td>
+            <td>{{item.description}}</td>
+            
+        </tr>
+    {% endfor %}
+</table>
+
+<br />
+
+<!-- Untuk button Add New Item -->
+<a href="{% url 'main:create_item' %}">
+    <button>
+        Add New Item
+    </button>
+</a>
+```
+
+
+#### 2. XML dan JSON
+Saya menambahkan fungsi `show_xml` dan `show_json` yang akan return HttpResponse berisi data yang sudah diserialize menjadi XML dan JSON.
+```python
+def show_xml(request):
+    data = Item.objects.all()
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json(request):
+    data = Item.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+```
+
+#### 3. XML dan JSON (by ID)
+Untuk ini, mirip seperti yang nomor 2, hanya saja sekarang saya hanya akan menampilkan barang sesuai ID saja.
+```python
+def show_xml_by_id(request, id):
+    data = Item.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json_by_id(request, id):
+    data = Item.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+```
+
+
+### Membuat _Routing_ URL
+Untuk setiap fungsi pada `views.py` yang ditambahkan, saya perlu menambahkan path nya pada `urls.py`. Hasil akhirnya, file `urls.py` pada direktori `main` akan berisi:
+```python
+from django.urls import path
+from main.views import show_main, create_item, show_xml, show_json, show_xml_by_id, show_json_by_id 
+
+app_name = 'main'
+
+urlpatterns = [
+    path('', show_main, name='show_main'),
+    path('create-product', create_item, name='create_item'),
+    path('xml/', show_xml, name='show_xml'),
+    path('json/', show_json, name='show_json'), 
+    path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
+    path('json/<int:id>/', show_json_by_id, name='show_json_by_id'), 
+]
+```
+
+## Perbedaan Form POST dan GET
+Perbedaan utamanya adalah terletak pada URL-nya.
+Pada GET, data/variabel akan ditampilkan pada URL, sebaliknya pada POST, data/variabel tidak akan ditampilkan di URL.
+
+GET tidak cocok bila digunakan untuk mengirim data-data penting, contohnya seperti password. Namun, user dapat dengan mudah memasukkan variabel baru, jadi cocok untuk mengirim data-data yang tidal terlalu penting/tidak rahasia.
+
+POST cenderung lebih aman, dan dapat digunakan untuk mengirim data-data penting. Panjang string URL pun tidak dibatasi. Namun, POST kurang efisien bila data yang dikirim adalah data-data yang tidak penting.
+## Perbedaan XML, JSON, dan HTML dalam Pengiriman Data
+XML (eXtensible Markup Language) menggunakan sintaks berbasis tag (mirip seperti HTML). Ini memungkinkan untuk mendefinisikan struktur data yang sangat fleksibel dan kompleks, tetapi jadi lebih sulit dibaca oleh manusia. XML dirancang untuk menjadi format data yang digunakan oleh komputer dan aplikasi, bukan untuk keterbacaan manusia. 
+
+HTML (Hypertext Markup Language) adalah bahasa yang digunakan untuk membangun tampilan web dan memiliki tujuan utama untuk mengorganisasi dan menampilkan konten di browser. Ini memiliki struktur dasar yang berbeda dan **biasanya tidak digunakan untuk pengiriman data** dalam konteks yang sama seperti XML atau JSON. HTML digunakan untuk tujuan yang berbeda dan memiliki fokus utama pada tampilan dan interaksi dengan pengguna.
+
+JSON (JavaScript Object Notation) adalah adalah format data yang digunakan untuk mengirim dan menyimpan informasi dalam bentuk teks yang mudah dibaca oleh manusia dan mudah diproses oleh komputer. JSON umum digunakan dalam pengembangan web dan aplikasi, khususnya dalam pertukaran data antara browser dan server, karena komunikasi web umumnya berbasis JavaScript.
+
+
+## Pentingnya JSON dalam Pertukaran Data antara Aplikasi Web Modern
+* JSON menggunakan sintaks yang lebih sederhana dan mudah dibaca oleh manusia, menggunakan struktur List dan Dictionary pada Python.
+
+* JSON memiliki overhead (jumlah karakter) yang lebih kecil dibandingkan dengan XML dan HTML, sehingga memerlukan lebih sedikit sumber daya untuk mengurai data
+
+* JSON  didukung untuk mengurai dan menghasilkan data oleh banyak bahasa pemrograman. Ini memungkinkan aplikasi yang ditulis dalam bahasa yang berbeda untuk berkomunikasi dengan mudah dan mempertukarkan data dengan format yang sama.
+
+## Screenshot Postman
+### 1. HTML
+![Alt text](images/data_html.jpg)
+### 2. JSON
+![Alt text](images/json_without_id.jpg)
+### 3. JSON by ID
+![Alt text](images/json_with_id.jpg)
+### 4. XML
+![Alt text](images/xml_without_id.jpg)
+### 5. XML by ID
+![Alt text](images/xml_with_id.jpg)
+
+
+
+
+# Tugas 2
 ## Implementasi
 Sebelum memulai, perlu diperhatikan bahwa semua perintah yang dijalankan di _command prompt_ harus berada di direktori utama proyek.
 ### 1. Membuat proyek Django baru
