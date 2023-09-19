@@ -1,6 +1,6 @@
 # Tugas 3
 ## Implementasi
-### Membuat Input Form
+### 1. Membuat Input Form
 Membuat `forms.py` pada direktori APP (dalam hal ini adalah `main`) dengan isi:
 ```python
 from django.forms import ModelForm
@@ -51,8 +51,8 @@ Tidak lupa, saya tambahkan path nya pada `urls.py` di direktori `main`
 path('create-product', create_item, name='create_item'),
 ```
 
-### Menampilkan Objek yang Ditambahkan (dalam Format HTML, XML, JSON, XML by ID, dan JSON by ID)
-#### 1. HTML
+### 2. Menampilkan Objek yang Ditambahkan (dalam Format HTML, XML, JSON, XML by ID, dan JSON by ID)
+#### HTML
 Karena dalam pengerjaan ini saya ingin menampilkan objeknya pada halaman utama, maka saya perlu memodifikasi fungsi `show_main` pada `views.py` agar data produk dapat ditampilkan.
 ```python
 def show_main(request):
@@ -100,7 +100,7 @@ Saya juga perlu melakukan sedikit modifikasi pada `main.html` untuk menampilkan 
 ```
 
 
-#### 2. XML dan JSON
+#### XML dan JSON
 Saya menambahkan fungsi `show_xml` dan `show_json` yang akan return HttpResponse berisi data yang sudah diserialize menjadi XML dan JSON.
 ```python
 def show_xml(request):
@@ -112,7 +112,7 @@ def show_json(request):
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 ```
 
-#### 3. XML dan JSON (by ID)
+#### XML dan JSON (by ID)
 Untuk ini, mirip seperti yang nomor 2, hanya saja sekarang saya hanya akan menampilkan barang sesuai ID saja.
 ```python
 def show_xml_by_id(request, id):
@@ -125,7 +125,7 @@ def show_json_by_id(request, id):
 ```
 
 
-### Membuat _Routing_ URL
+### 3. Membuat _Routing_ URL
 Untuk setiap fungsi pada `views.py` yang ditambahkan, saya perlu menambahkan path nya pada `urls.py`. Hasil akhirnya, file `urls.py` pada direktori `main` akan berisi:
 ```python
 from django.urls import path
