@@ -53,7 +53,7 @@ def login_user(request):
 
 def register(request):
     form = UserCreationForm()
-
+    # print(request.POST)
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -87,10 +87,21 @@ def show_main(request):
     else:
         items_total = sum([x.amount for x in items])
 
+    if items.count() == 0:
+        last_items = []
+        items = []
+    elif items.count() == 1:
+        last_items = items
+        items = []
+    else:
+        last_items = items[items.count()-1]
+        items = items[:items.count()-1]
+
     context = {
         'name': request.user.username,
         'class': 'PBP B',
         'items': items,
+        'last_items': last_items,
         'jenis_items':len(items),
         'total_items':items_total,
         'last_login': request.COOKIES['last_login'],

@@ -6,29 +6,68 @@
 
 {% block content %}  
 
-<div class = "login">
-    
-    <h1>Register</h1>  
+<div class="d-flex h-100 justify-content-center">
+    {% comment %} <div class=""> {% endcomment %}
+    <div class="container w-50 m-5 bg-success rounded p-5 text-white border border-dark">
 
-        <form method="POST" >  
-            {% csrf_token %}  
-            <table>  
-                {{ form.as_table }}  
-                <tr>  
+        <h1>Register</h1>
+
+        <form method="POST" action="" class="my-4">
+            {% csrf_token %}
+            <table class="form-group">
+                <tr>
+                    <td class="fw-semibold">Username : </td>
+                    <td><input class="form-control m-1" type="text" name="username" placeholder="Username"></td>
+                </tr>
+                        
+                <tr>
+                    <td class="fw-semibold">Password : </td>
+                    <td><input class="form-control m-1" type="password" name="password1" placeholder="Password"></td>
+                </tr>
+
+                <tr>
+                    <td class="fw-semibold">Confirm Password : </td>
+                    <td><input class="form-control m-1" type="password" name="password2" placeholder="Password"></td>
+                </tr>
+
+                <tr>
                     <td></td>
-                    <td><input type="submit" name="submit" value="Daftar"/></td>  
-                </tr>  
-            </table>  
+                    <td><input class="btn btn-primary my-1 fw-bold" type="submit" value="Register"></td>
+                </tr>
+            </table>
         </form>
 
-    {% if messages %}  
-        <ul>   
-            {% for message in messages %}  
-                <li>{{ message }}</li>  
-                {% endfor %}  
-        </ul>   
-    {% endif %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}     
+            
+        Have an account? <a class="text-white" href="{% url 'main:login' %}">Login Now</a>
 
-</div>  
+    </div>
 
+            {% comment %} <form method="POST" >  
+                {% csrf_token %}  
+                <table>  
+                    {{ form.as_table }}  
+                    <tr>  
+                        <td></td>
+                        <td><input type="submit" name="submit" value="Daftar"/></td>  
+                    </tr>  
+                </table>  
+            </form> {% endcomment %}
+
+        {% if messages %}  
+            <ul>   
+                {% for message in messages %}  
+                    <li>{{ message }}</li>  
+                    {% endfor %}  
+            </ul>   
+        {% endif %}
+
+    </div>  
+</div>
 {% endblock content %}

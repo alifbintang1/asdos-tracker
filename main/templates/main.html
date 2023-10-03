@@ -7,86 +7,122 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Asdos Tracker</title>
+        <nav class="navbar navbar-expanded-lg bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white font-monospace" href="#">Asdos Tracker</a>    
+                <div>
+                    <a class="text-white m-2" href="{% url 'main:create_item' %}" style="text-decoration: none;">
+                        <button class="btn rounded btn-primary fw-semibold">Add Product</button>
+                    </a>
+                    <a class="text-white m-2" href="/logout">
+                        <button class="btn rounded btn-primary fw-semibold">Log out</button>
+                    </a>
+                </div>
+            </div>
+        </nav>
     </head>
     <body>
         <header>
-            <h1>Welcome to Asdos Tracker!</h1>
-            <p>A place where you can track your asdos log</p>
+            <div class="d-flex">
+                <h2 class="my-4 mx-4 fw-bold">Welcome to Asdos Tracker!</h2>
+                <p class="my-5">A place where you can track your asdos log</p>
+            </div>
         </header>
 
-        <section>
-            <h2>Asdos Information</h2>
-            <h5>Name:</h5>
-            <p>{{ name }}</p>
-            <h5>Class:</h5>
-            <p>{{ class }}</p>
-        </section>
-
-        <h3>Kamu telah mencatat {{jenis_items}} log dengan jumlah waktu {{total_items}} jam</h3>
-        <!-- TABLE -->
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Description</th>
-
-                <th>Add</th>
-                <th>Sub</th>
-                <th>Delete</th> 
-            </tr>
-        
-            {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
-        
+        <div class="row mx-5">
+            <div class="col mx-5">
+                <div class="card">
+                    <div class="card-header text-center fw-semibold bg-success text-white">
+                        Banyak Log
+                    </div>
+                    <div class="card-body text-center">
+                        <h1 class="card-title">{{jenis_items}}</h1>
+                        {% comment %} <p class="card-text">{{jenis_items}}</p> {% endcomment %}
+                    </div>
+                </div>
+            </div>
+            <div class="col mx-5">
+                <div class="card">
+                    <div class="card-header text-center fw-semibold bg-danger text-white">
+                        Total Waktu
+                    </div>
+                    <div class="card-body text-center">
+                        <h1 class="card-title">{{total_items}}</h1>
+                        {% comment %} <p class="card-text">{{jenis_items}}</p> {% endcomment %}
+                    </div>
+                </div>
+            </div>
+        </div>
+          
+        <div class="row m-5">
             {% for item in items %}
-                <tr>
-                    <td>{{item.name}}</td>
-                    <td>{{item.amount}}</td>
-                    <td>{{item.description}}</td>
-                    <td>
-                        <form method="post" action="{% url 'main:add_amount' item.id %}">
-                            {% csrf_token %}
-                            <button type="submit">+</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form method="post" action="{% url 'main:sub_amount' item.id %}">
-                            {% csrf_token %}
-                            <button type="submit">-</button>
-                        </form>
-                    </td>
-                    <td>
+            <div class="col mx-5">
+                <div class="card">
+                    <div class="card-header text-center fw-semibold bg-secondary text-white">
+                        {{item.name}}
+                    </div>
+                    <div class="card-body text-center">
+                        <h1 class="card-title">{{item.amount}} Jam</h1>
+                        {{item.description}}
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
                         <form method="post" action="{% url 'main:delete_item' item.id %}">
                             {% csrf_token %}
-                            <button type="submit">X</button>
+                            <button class="form-control btn btn-primary fw-bold" type="submit">Delete</button>
                         </form>
-                    </td>
-                    <td>
+                        <form method="post" action="{% url 'main:sub_amount' item.id %}">
+                            {% csrf_token %}
+                            <button class="form-control btn btn-primary fw-bold" type="submit">Mines</button>
+                        </form>
+                        <form class="form-group" method="post" action="{% url 'main:add_amount' item.id %}">
+                            {% csrf_token %}
+                            <button class="form-control btn btn-primary fw-bold" type="submit">Add</button>
+                        </form>
                         <a href="{% url 'main:edit_item' item.pk %}">
-                            <button>
+                            <button class="form-control btn btn-primary fw-bold">
                                 Edit
                             </button>
                         </a>
-                    </td>
-                </tr>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
-        </table>
+            {% if last_items %}
+            <div class="col mx-5">
+                <div class="card">
+                    <div class="card-header text-center fw-semibold bg-info text-white">
+                        {{last_items.name}}
+                    </div>
+                    <div class="card-body text-center">
+                        <h1 class="card-title">{{last_items.amount}} Jam</h1>
+                        {{last_items.description}}
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <form method="post" action="{% url 'main:delete_item' last_items.id %}">
+                            {% csrf_token %}
+                            <button class="form-control btn btn-primary fw-bold" type="submit">Delete</button>
+                        </form>
+                        <form method="post" action="{% url 'main:sub_amount' last_items.id %}">
+                            {% csrf_token %}
+                            <button class="form-control btn btn-primary fw-bold" type="submit">Mines</button>
+                        </form>
+                        <form class="form-group" method="post" action="{% url 'main:add_amount' last_items.id %}">
+                            {% csrf_token %}
+                            <button class="form-control btn btn-primary fw-bold" type="submit">Add</button>
+                        </form>
+                        <a href="{% url 'main:edit_item' last_items.pk %}">
+                            <button class="form-control btn btn-primary fw-bold">
+                                Edit
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
 
-        
-        <br />
+        <div class="my-2">
+        <hr>
         <h5>Sesi terakhir login: {{ last_login }}</h5>
-        
-        <a href="{% url 'main:create_item' %}">
-            <button>
-                Add New Item
-            </button>
-        </a>
-        
-        
-        <a href="{% url 'main:logout' %}">
-            <button>
-                Logout
-            </button>
-        </a>
 
     </body>
     </html>

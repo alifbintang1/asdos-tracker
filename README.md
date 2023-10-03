@@ -2,21 +2,34 @@
 ## Implementasi
 
 ## Manfaat Element Sector dan Waktu Penggunaannya
+### 1. Element Sector
+Element selector digunakan untuk memilih semua elemen dengan tipe tertentu dalam dokumen HTML, baik digunakan ketika ingin menerapkan gaya umum ke seluruh tipe elemen tertentu dalam dokumen.
+### 2. ID Selector
+ID selector digunakan untuk memilih elemen berdasarkan atribut id yang unik, digunakan ketika perlu merujuk ke elemen tertentu dalam dokumen dan tahu bahwa elemen tersebut memiliki atribut id yang unik
+### 3. Class Selector
+Class selector digunakan untuk memilih elemen berdasarkan atribut class yang diberikan, digunakan ketika ingin menerapkan gaya yang sama atau fungsi yang sama pada beberapa elemen dalam dokumen.
 
 ## HTML5 Tag
 HTML5 adalah versi terbaru dari bahasa markup HTML (Hypertext Markup Language) yang digunakan untuk membuat halaman web. HTML5 menyediakan sejumlah tag (elemen) baru yang memungkinkan saya untuk membuat konten website yang lebih interaktif.
+<nav>: untuk menentukan area navigasi atau menu di dalam halaman web.
+<article>: untuk mengelompokkan konten yang berdiri sendiri atau independen, seperti berita, posting blog, atau artikel.
+<canvas>: untuk membuat grafik, gambar, dan animasi yang dapat digambar dan dimanipulasi menggunakan JavaScript.
+<audio> dan <video>: untuk mendukung media audio dan video yang lebih baik.
 
 ## Perbedaan antara _margin_ dan _padding_
 Baik margin dan padding sama-sama memiliki fungsi untuk mengatur tata letak. Perbedaan utamanya adalah margin merupakan ruang antara elemen tersebut dan elemen-elemen lain yang ada di sekitarnya, sedangkan padding adalah ruang di dalam batas elemen di antara kontennya dan batasnya sendiri. Selain itu, margin dapat memengaruhi tata letak elemen-elemen di seluruh halaman web, sementara padding tidak akan memengaruhi tata letak elemen-elemen lain di luar elemen yang memiliki padding.
 
 ## Perbedaan _framework_ CSS Tailwind dan Bootstrap
+Bootstrap adalah framework CSS yang lebih tradisional, menyediakan sejumlah komponen siap pakai, seperti tombol, jumbotron, dan navigasi, yang memudahkan pengembangan web yang cepat. Bootstrap memiliki gaya bawaan yang khas yang dapat mengarah pada desain yang serupa di banyak situs web.
 
+Tailwind CSS adalah framework CSS yang lebih modern dan berbasis utility class. saya membangun tampilan dengan menggabungkan kelas-kelas yang telah ditentukan sebelumnya untuk mengatur tata letak, warna, dan gaya elemen-elemen. Ini memberikan fleksibilitas yang besar dan memungkinkan untuk mengontrol setiap aspek desain dengan sangat rinci.
 
+Jadi, singkatnya, gunakan Bootstrap jika ingin pengembangan cepat dengan desain yang mirip-mirip dan gunakan Tailwind jika ingin fleksibilitas maksimum dalam menentukan desain situs web.
 
 # Tugas 4
 ## Implementasi
 ### 1. Membuat Fungsi Registrasi
-Dengan memanfaatkan UserCreationForm (formulir bawaan), pengguna baru dapat mendaftar dengan mudah di situs web Anda tanpa harus menulis kode dari awal. Saya lalu membuat fungsi untuk register
+Dengan memanfaatkan UserCreationForm (formulir bawaan), pengguna baru dapat mendaftar dengan mudah di situs web saya tanpa harus menulis kode dari awal. Saya lalu membuat fungsi untuk register
 ```python
 def register(request):
     form = UserCreationForm()
