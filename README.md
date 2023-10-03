@@ -11,10 +11,14 @@ Class selector digunakan untuk memilih elemen berdasarkan atribut class yang dib
 
 ## HTML5 Tag
 HTML5 adalah versi terbaru dari bahasa markup HTML (Hypertext Markup Language) yang digunakan untuk membuat halaman web. HTML5 menyediakan sejumlah tag (elemen) baru yang memungkinkan saya untuk membuat konten website yang lebih interaktif.
-<nav>: untuk menentukan area navigasi atau menu di dalam halaman web.
-<article>: untuk mengelompokkan konten yang berdiri sendiri atau independen, seperti berita, posting blog, atau artikel.
-<canvas>: untuk membuat grafik, gambar, dan animasi yang dapat digambar dan dimanipulasi menggunakan JavaScript.
-<audio> dan <video>: untuk mendukung media audio dan video yang lebih baik.
+
+`<nav>`: untuk menentukan area navigasi atau menu di dalam halaman web.
+
+`<article>`: untuk mengelompokkan konten yang berdiri sendiri atau independen, seperti berita, posting blog, atau artikel.
+
+`<canvas>`: untuk membuat grafik, gambar, dan animasi yang dapat digambar dan dimanipulasi menggunakan JavaScript.
+
+`<audio>` dan `<video>`: untuk mendukung media audio dan video yang lebih baik.
 
 ## Perbedaan antara _margin_ dan _padding_
 Baik margin dan padding sama-sama memiliki fungsi untuk mengatur tata letak. Perbedaan utamanya adalah margin merupakan ruang antara elemen tersebut dan elemen-elemen lain yang ada di sekitarnya, sedangkan padding adalah ruang di dalam batas elemen di antara kontennya dan batasnya sendiri. Selain itu, margin dapat memengaruhi tata letak elemen-elemen di seluruh halaman web, sementara padding tidak akan memengaruhi tata letak elemen-elemen lain di luar elemen yang memiliki padding.
