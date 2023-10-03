@@ -60,6 +60,13 @@
                             <button type="submit">X</button>
                         </form>
                     </td>
+                    <td>
+                        <a href="{% url 'main:edit_item' item.pk %}">
+                            <button>
+                                Edit
+                            </button>
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
         </table>

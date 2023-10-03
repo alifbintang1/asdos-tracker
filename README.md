@@ -1,3 +1,18 @@
+# Tugas 5
+## Implementasi
+
+## Manfaat Element Sector dan Waktu Penggunaannya
+
+## HTML5 Tag
+HTML5 adalah versi terbaru dari bahasa markup HTML (Hypertext Markup Language) yang digunakan untuk membuat halaman web. HTML5 menyediakan sejumlah tag (elemen) baru yang memungkinkan saya untuk membuat konten website yang lebih interaktif.
+
+## Perbedaan antara _margin_ dan _padding_
+Baik margin dan padding sama-sama memiliki fungsi untuk mengatur tata letak. Perbedaan utamanya adalah margin merupakan ruang antara elemen tersebut dan elemen-elemen lain yang ada di sekitarnya, sedangkan padding adalah ruang di dalam batas elemen di antara kontennya dan batasnya sendiri. Selain itu, margin dapat memengaruhi tata letak elemen-elemen di seluruh halaman web, sementara padding tidak akan memengaruhi tata letak elemen-elemen lain di luar elemen yang memiliki padding.
+
+## Perbedaan _framework_ CSS Tailwind dan Bootstrap
+
+
+
 # Tugas 4
 ## Implementasi
 ### 1. Membuat Fungsi Registrasi

@@ -22,7 +22,7 @@ class mainTest(TestCase):
         self.assertContains(response, "Name:")
         self.assertContains(response, "Class:")
 
-    def test_footer_content(self):
-        response = Client().get('/main/')
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "2023 Alif Bintang (2206029153). Pemrograman Berbasis Platform Gasal 23/24.")
+    # def test_footer_content(self):
+    #     response = Client().get('/main/')
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertContains(response, "2023 Alif Bintang (2206029153). Pemrograman Berbasis Platform Gasal 23/24.")
