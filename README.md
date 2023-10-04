@@ -1,5 +1,23 @@
 # Tugas 5
 ## Implementasi
+Pada implementasi, saya memilih untuk menggunakan framework bootstrap.
+
+Beberapa komponen bootstrap pada page `main` yang saya gunakan adalah.
+
+1. Navbar `<nav class="navbar navbar-expanded-lg bg-dark">`
+Komponen Navbar Bootstrap yang digunakan untuk membuat navigasi di bagian atas halaman. `bg-dark` memberikan warna latar belakang gelap pada navbar.
+
+2. Container `<div class="container-fluid">`
+Container digunakan sebagai pembungkus konten agar lebih mudah mengatur tata letak yang sesuai. container-fluid adalah kelas yang membuat container memiliki lebar penuh mengisi seluruh lebar layar.
+
+3. Button `<button class="btn rounded btn-primary fw-semibold">Add Product</button>`
+btn adalah kelas dasar untuk tombol. btn-primary memberikan warna latar belakang biru. rounded membuat pojok tombol menjadi rounded. fw-semibold memberikan ketebalan teks yang lebih kuat.
+
+4. Card `<div class="card">`
+Komponen Card pada Bootstrap. Card digunakan untuk mengelompokkan konten dalam sebuah kartu yang memiliki latar belakang, header, dan footer. Dalam kode saya, kartu digunakan untuk menampilkan data agar lebih menarik.
+
+5. Row dan Col `<div class="row mx-5"> <div class="col mx-5">`
+Komponen untuk membangin grid pada Bootstrap. row digunakan untuk mengelompokkan kolom-kolom bersama, dan col digunakan untuk menentukan kolom. mx-5 adalah kelas yang memberikan margin horizontal pada elemen.
 
 ## Manfaat Element Sector dan Waktu Penggunaannya
 ### 1. Element Sector
