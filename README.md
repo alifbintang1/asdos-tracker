@@ -1,3 +1,5 @@
+Link : http://alif-bintang-tugas.pbp.cs.ui.ac.id/
+
 # Tugas 6
 ## Implementasi
 ### 1. Membuat Fungsi Create Item, Delete Item, Get Item, dan Get Total Item Menggunakan AJAX
