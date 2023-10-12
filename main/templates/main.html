@@ -1,116 +1,197 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Asdos Tracker</title>
-        <nav class="navbar navbar-expanded-lg bg-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand text-white font-monospace" href="#">Asdos Tracker</a>    
-                <div>
-                    <a class="text-white m-2" href="{% url 'main:create_item' %}" style="text-decoration: none;">
-                        <button class="btn rounded btn-primary fw-semibold">Add Product</button>
-                    </a>
-                    <a class="text-white m-2" href="/logout">
-                        <button class="btn rounded btn-primary fw-semibold">Log out</button>
-                    </a>
-                </div>
+    <title>Asdos Tracker</title>
+    <nav class="navbar navbar-expanded-lg bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white font-monospace" href="#">Asdos Tracker</a>    
+            <div>
+                <!-- <a class="text-white m-2" href="{% url 'main:create_item' %}" style="text-decoration: none;">
+                    <button class="btn rounded btn-primary fw-semibold">Add Product</button>
+                </a> -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Item by AJAX</button>
+                <a class="text-white m-2" href="/logout">
+                    <button class="btn rounded btn-primary fw-semibold">Log out</button>
+                </a>
             </div>
-        </nav>
-    </head>
-    <body>
-        <header>
-            <div class="d-flex">
-                <h2 class="my-4 mx-4 fw-bold">Welcome to Asdos Tracker!</h2>
-                <p class="my-5">A place where you can track your asdos log</p>
-            </div>
-        </header>
+        </div>
+    </nav>
+    
+    <div class="d-flex">
+        <h2 class="my-4 mx-4 fw-bold">Welcome to Asdos Tracker!</h2>
+        <p class="my-5">A place where you can track your asdos log</p>
+    </div>
 
-        <div class="row mx-5">
-            <div class="col mx-5">
-                <div class="card">
-                    <div class="card-header text-center fw-semibold bg-success text-white">
-                        Banyak Log
-                    </div>
-                    <div class="card-body text-center">
-                        <h1 class="card-title">{{jenis_items}}</h1>
-                        {% comment %} <p class="card-text">{{jenis_items}}</p> {% endcomment %}
-                    </div>
+    <div class="row mx-5">
+        <div class="col mx-5">
+            <div class="card">
+                <div class="card-header text-center fw-semibold bg-success text-white">
+                    Banyak Log
                 </div>
-            </div>
-            <div class="col mx-5">
-                <div class="card">
-                    <div class="card-header text-center fw-semibold bg-danger text-white">
-                        Total Waktu
-                    </div>
-                    <div class="card-body text-center">
-                        <h1 class="card-title">{{total_items}}</h1>
-                        {% comment %} <p class="card-text">{{jenis_items}}</p> {% endcomment %}
-                    </div>
+                <div class="card-body text-center">
+                    <h1 class="card-title" id="id_jenis_item">0</h1>
+                    {% comment %} <p class="card-text">${jenis_items}</p> {% endcomment %}
                 </div>
             </div>
         </div>
-          
-        <div class="row m-5">
-            {% for item in items %}
-            <div class="col mx-5">
-                <div class="card">
-                    <div class="card-header text-center fw-semibold bg-secondary text-white">
-                        {{item.name}}
-                    </div>
-                    <div class="card-body text-center">
-                        <h1 class="card-title">{{item.amount}} Jam</h1>
-                        {{item.description}}
-                    </div>
-                    <div class="card-footer d-flex justify-content-between">
-                        <form method="post" action="{% url 'main:delete_item' item.id %}">
-                            {% csrf_token %}
-                            <button class="form-control btn btn-primary fw-bold" type="submit">Delete</button>
-                        </form>
-                        <form method="post" action="{% url 'main:sub_amount' item.id %}">
-                            {% csrf_token %}
-                            <button class="form-control btn btn-primary fw-bold" type="submit">Mines</button>
-                        </form>
-                        <form class="form-group" method="post" action="{% url 'main:add_amount' item.id %}">
-                            {% csrf_token %}
-                            <button class="form-control btn btn-primary fw-bold" type="submit">Add</button>
-                        </form>
-                        <a href="{% url 'main:edit_item' item.pk %}">
-                            <button class="form-control btn btn-primary fw-bold">
-                                Edit
-                            </button>
-                        </a>
-                    </div>
+        <div class="col mx-5">
+            <div class="card">
+                <div class="card-header text-center fw-semibold bg-danger text-white">
+                    Total Waktu
+                </div>
+                <div class="card-body text-center">
+                    <h1 class="card-title" id="id_total_item">0</h1>
+                    {% comment %} <p class="card-text">${total_items}</p> {% endcomment %}
                 </div>
             </div>
-            {% endfor %}
-            {% if last_items %}
+        </div>
+
+        
+    </div>
+
+    <div id="item_cards"></div>
+
+    <div class="my-2"></div>
+    <hr>
+    <h5>Sesi terakhir login: {{ last_login }}</h5>
+
+    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Item by AJAX</button> -->
+
+
+    <!-- MODAL -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Item</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="col-form-label">Amount:</label>
+                            <input type="number" class="form-control" id="amount" name="amount"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        async function getItems() {
+            return fetch("{% url 'main:get_item_json' %}").then((res) => res.json())
+        }
+        async function getTotalItems() {
+            return fetch("{% url 'main:get_total_items' %}").then((res) => res.json())
+        }
+
+        async function refreshItems() {
+            document.getElementById("item_cards").innerHTML = ""
+            
+            const items = await getItems();
+            const total_items = await getTotalItems();
+
+
+            const jenis_items = items.length;
+
+        
+            const before_items = items.slice(0,jenis_items-1);
+            const last_items = items[jenis_items-1];
+            
+            let htmlString = ``
+            document.getElementById("id_jenis_item").innerHTML = 0
+            document.getElementById("id_total_item").innerHTML = 0
+
+            htmlString += `\n
+            <div class="row m-5">
+            `
+
+
+            before_items.forEach((item) => {
+                htmlString += `\n
+                <div class="col mx-5">
+                    <div class="card">
+                        <div class="card-header text-center fw-semibold bg-secondary text-white">
+                            ${item.fields.name}
+                        </div>
+                        <div class="card-body text-center">
+                            <h1 class="card-title">${item.fields.amount} Jam</h1>
+                            ${item.fields.description}
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+
+                            <a>
+                                <button class="form-control btn btn-primary fw-bold" onclick=deleteItem(${item.pk})>
+                                    Delete
+                                </button>
+                            </a>
+
+                            <form method="post" action="sub-amount/${item.pk}/">
+                                {% csrf_token %}
+                                <button class="form-control btn btn-primary fw-bold" type="submit">Mines</button>
+                            </form>
+
+                            <form class="form-group" method="post" action="add-amount/${item.pk}/">
+                                {% csrf_token %}
+                                <button class="form-control btn btn-primary fw-bold" type="submit">Add</button>
+                            </form>
+
+                            <a href="edit-item/${item.pk}/">
+                                <button class="form-control btn btn-primary fw-bold">
+                                    Edit
+                                </button>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+                `
+            })
+            htmlString += `
             <div class="col mx-5">
                 <div class="card">
                     <div class="card-header text-center fw-semibold bg-info text-white">
-                        {{last_items.name}}
+                        ${last_items.fields.name}
                     </div>
                     <div class="card-body text-center">
-                        <h1 class="card-title">{{last_items.amount}} Jam</h1>
-                        {{last_items.description}}
+                        <h1 class="card-title">${last_items.fields.amount} Jam</h1>
+                        ${last_items.fields.description}
                     </div>
                     <div class="card-footer d-flex justify-content-between">
-                        <form method="post" action="{% url 'main:delete_item' last_items.id %}">
-                            {% csrf_token %}
-                            <button class="form-control btn btn-primary fw-bold" type="submit">Delete</button>
-                        </form>
-                        <form method="post" action="{% url 'main:sub_amount' last_items.id %}">
+
+                        <a>
+                            <button class="form-control btn btn-primary fw-bold" onclick=deleteItem(${last_items.pk})>
+                                Delete
+                            </button>
+                        </a>
+
+
+
+                        <form method="post" action="sub-amount/${last_items.pk}/">
                             {% csrf_token %}
                             <button class="form-control btn btn-primary fw-bold" type="submit">Mines</button>
                         </form>
-                        <form class="form-group" method="post" action="{% url 'main:add_amount' last_items.id %}">
+                        <form class="form-group" method="post" action="add-amount/${last_items.pk}/">
                             {% csrf_token %}
                             <button class="form-control btn btn-primary fw-bold" type="submit">Add</button>
                         </form>
-                        <a href="{% url 'main:edit_item' last_items.pk %}">
+
+                        <a href="edit-item/${last_items.pk}/">
                             <button class="form-control btn btn-primary fw-bold">
                                 Edit
                             </button>
@@ -118,13 +199,102 @@
                     </div>
                 </div>
             </div>
-            {% endif %}
+            `
+            htmlString += `\n
+            </div>
+            `
+            document.getElementById("item_cards").innerHTML = htmlString
+            document.getElementById("id_jenis_item").innerHTML = jenis_items
+            document.getElementById("id_total_item").innerHTML = total_items
+        }
 
-        <div class="my-2">
-        <hr>
-        <h5>Sesi terakhir login: {{ last_login }}</h5>
+        refreshItems()
 
-    </body>
-    </html>
+        function deleteItem(id_item) {
+            fetch(`/delete-item-ajax/${id_item}/`, {
+                method: "DELETE",
+            }).then(refreshItems)
+            return false
+        }
+
+        function addItem() {
+            fetch("{% url 'main:create_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshItems)
+
+            document.getElementById("form").reset()
+            return false
+        }
+        document.getElementById("button_add").onclick = addItem
+
+    </script>
+
 
 {% endblock content %}
+<!-- 
+<div class="row m-5">
+    {% for item in items %}
+    <div class="col mx-5">
+        <div class="card">
+            <div class="card-header text-center fw-semibold bg-secondary text-white">
+                {{item.name}}
+            </div>
+            <div class="card-body text-center">
+                <h1 class="card-title">{{item.amount}} Jam</h1>
+                {{item.description}}
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <form method="post" action="{% url 'main:delete_item' item.id %}">
+                    {% csrf_token %}
+                    <button class="form-control btn btn-primary fw-bold" type="submit">Delete</button>
+                </form>
+                <form method="post" action="{% url 'main:sub_amount' item.id %}">
+                    {% csrf_token %}
+                    <button class="form-control btn btn-primary fw-bold" type="submit">Mines</button>
+                </form>
+                <form class="form-group" method="post" action="{% url 'main:add_amount' item.id %}">
+                    {% csrf_token %}
+                    <button class="form-control btn btn-primary fw-bold" type="submit">Add</button>
+                </form>
+                <a href="{% url 'main:edit_item' item.pk %}">
+                    <button class="form-control btn btn-primary fw-bold">
+                        Edit
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if last_items %}
+    <div class="col mx-5">
+        <div class="card">
+            <div class="card-header text-center fw-semibold bg-info text-white">
+                {{last_items.name}}
+            </div>
+            <div class="card-body text-center">
+                <h1 class="card-title">{{last_items.amount}} Jam</h1>
+                {{last_items.description}}
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <form method="post" action="{% url 'main:delete_item' last_items.id %}">
+                    {% csrf_token %}
+                    <button class="form-control btn btn-primary fw-bold" type="submit">Delete</button>
+                </form>
+                <form method="post" action="{% url 'main:sub_amount' last_items.id %}">
+                    {% csrf_token %}
+                    <button class="form-control btn btn-primary fw-bold" type="submit">Mines</button>
+                </form>
+                <form class="form-group" method="post" action="{% url 'main:add_amount' last_items.id %}">
+                    {% csrf_token %}
+                    <button class="form-control btn btn-primary fw-bold" type="submit">Add</button>
+                </form>
+                <a href="{% url 'main:edit_item' last_items.pk %}">
+                    <button class="form-control btn btn-primary fw-bold">
+                        Edit
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %} -->
